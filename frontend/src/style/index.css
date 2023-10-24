@@ -1,6 +1,6 @@
 * {
   padding: 0;
-  margin: 0;
+  margin: 0; /* reset all padding and margin */
   box-sizing: border-box;
 }
 
