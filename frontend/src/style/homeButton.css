@@ -1,0 +1,17 @@
+.home-button {
+  position: fixed;
+  z-index: 1000;
+  bottom: 10px;
+  left: 10px;
+  cursor: pointer;
+  color: var(--text-color);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  background: var(--theme-color-dark);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.245), 0 0 10px rgba(0, 0, 0, 0.245);
+  padding: 0.4rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  display: grid;
+  place-items: center;
+}

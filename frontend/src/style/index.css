@@ -1,0 +1,557 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100vh;
+  display: block;
+}
+
+body {
+  overflow: auto;
+  overscroll-behavior: none;
+  font-family: sans-serif;
+}
+
+:root {
+  --glassmorphic: rgba(255, 255, 255, 0.3);
+  --glassmorphic-dark: rgba(207, 207, 207, 0.3);
+  --text-color: #fff;
+  --theme-color-dark: #a17ab1;
+  --gradient: -45deg, #cbb4d4, #20002c;
+  --gradient-dark: -45deg, #8b6f96, #20002c;
+  --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  --section-width: 550px;
+}
+/* global selectors */
+.container {
+  background: linear-gradient(var(--gradient));
+  background: -webkit-linear-gradient(var(--gradient));
+  background-size: 400%;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: gradient 15s ease infinite;
+  display: flex;
+  gap: 0.5rem;
+  padding: 2vh;
+  padding-bottom: 0;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 70% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+.section {
+  background: var(--glassmorphic);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  padding: 1.2em 2em;
+  border-radius: 20px;
+  border-left: 1px solid var(--glassmorphic);
+  border-top: 1px solid var(--glassmorphic);
+  width: var(--section-width);
+  height: auto;
+}
+.company-section {
+  height: 600px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.employee-section {
+  height: 98vh !important;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.employee-list {
+  overflow: auto;
+  height: 100%;
+  min-width: var(--section-width);
+  width: auto;
+  display: grid;
+  justify-content: center;
+  grid-template-rows: repeat(auto-fit, minmax(auto, 320px));
+  gap: 1rem;
+  padding: 0rem 3rem;
+}
+.employee-list::-webkit-scrollbar {
+  visibility: hidden;
+  width: 5px;
+  height: 5px;
+  transition: all ease-in-out 0.2s;
+}
+.on-scroll::-webkit-scrollbar {
+  border-radius: 100px;
+  width: 5px;
+  height: 5px;
+  background: transparent;
+  transition: all ease-in-out 0.2s;
+}
+.on-scroll::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  background: var(--glassmorphic);
+}
+.on-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--glassmorphic-dark);
+}
+/* company section */
+.company-section form {
+  color: var(--text-color);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-areas:
+    "title title"
+    "name email"
+    "employee employee"
+    "desc desc";
+  grid-template-rows: 110px 91px 91px 170px 20px;
+  grid-gap: 0 10px;
+}
+.company-section form > #slider-container {
+  grid-area: employee;
+}
+.company-section form > .title {
+  grid-area: title;
+}
+.company-section form > #description {
+  grid-area: desc;
+}
+.company-section form > #name {
+  grid-area: name;
+}
+.company-section form > #email {
+  grid-area: email;
+}
+.title {
+  position: relative;
+  display: grid;
+  justify-content: left;
+  align-items: start;
+  padding-left: 1rem;
+}
+.title:before {
+  position: absolute;
+  content: "";
+  background-color: var(--glassmorphic);
+  width: 5px;
+  height: 100%;
+}
+
+#welcome {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 600;
+}
+
+#content {
+  font-size: clamp(0.7rem, 1.6vw, 1rem);
+  text-align: left;
+}
+
+.input {
+  color: var(--text-color);
+  background: transparent;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-left: 1px solid var(--glassmorphic);
+  border-top: 1px solid var(--glassmorphic);
+  border-radius: 5px;
+  width: auto;
+  padding: 1em;
+  font-family: Montserrat, sans-serif;
+  transition: all 0.2s ease-in-out;
+  text-shadow: var(--text-shadow);
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+  border: 3px solid transparent;
+  outline: none;
+}
+.input:focus {
+  border: 3px solid white;
+}
+.submitbtn {
+  width: 150px;
+  font-size: clamp(0.8rem, 1.7vw, 1rem);
+  justify-self: start;
+  align-self: start;
+  color: var(--text-color);
+  background: transparent;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  border-left: 1px solid var(--glassmorphic);
+  border-top: 1px solid var(--glassmorphic);
+  border-radius: 5000px;
+  width: clamp(110px, 14vw, 160px);
+  padding: clamp(0.4rem, 1vw, 0.7rem);
+  font-family: Montserrat, sans-serif;
+  transition: all 0.2s ease-in-out;
+  text-shadow: var(--text-shadow);
+  font-weight: 500;
+  border: 3px solid transparent;
+  outline: none;
+  cursor: pointer;
+}
+#submitbtn:focus {
+  border: 3px solid white;
+}
+#submitbtn:hover {
+  cursor: pointer;
+  box-shadow: 4px 4px 60px rgba(255, 255, 255, 0.2);
+}
+
+#submitbtn:hover:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::placeholder {
+  font-family: Montserrat, sans-serif;
+  font-weight: 400;
+  color: var(--text-color);
+  text-shadow: var(--text-shadow);
+}
+#description {
+  height: 100%;
+  width: 100%;
+  resize: none;
+}
+.zero-employee {
+  color: var(--text-color);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  text-align: center;
+  text-shadow: var(--text-shadow);
+  width: auto;
+}
+.required-input {
+  border: 3px solid red;
+  box-shadow: 4px 4px 60px rgba(240, 2, 2, 0.366);
+}
+/* Single employee card style */
+.single-employee h1 {
+  color: white;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+}
+.single-employee {
+  display: grid;
+  align-items: center;
+  gap: 0.5rem;
+  height: auto;
+  max-height: 320px;
+}
+.single-employee form {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-areas:
+    "name age"
+    "email email"
+    "job job"
+    "file file";
+  grid-template-rows: 60px 60px 60px 60px;
+  grid-template-columns: 55% 45%;
+  grid-gap: 0 10px;
+}
+.single-employee form > .employeeName {
+  grid-area: name;
+  width: 100%;
+}
+.single-employee form > .employeeEmail {
+  grid-area: email;
+  width: 100%;
+}
+.single-employee form > .employeeAge {
+  grid-area: age;
+  width: 100%;
+}
+.single-employee form > .employeJobTitle {
+  grid-area: job;
+}
+.single-employee form > .employeeCVFile {
+  grid-area: file;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.single-employee form label {
+  color: white;
+  font-size: clamp(0.7rem, 1.8vw, 1rem);
+  text-shadow: var(--text-shadow);
+}
+.employeeCVFile {
+  color: white;
+  text-shadow: var(--text-shadow);
+  outline: none;
+}
+input::file-selector-button {
+  color: var(--text-color);
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  text-shadow: var(--text-shadow);
+  background: transparent;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 5px;
+  padding: 1rem;
+  font-family: Montserrat, sans-serif;
+  outline: none;
+}
+input[type="file"]:focus {
+  border: 3px solid white;
+}
+/* Error Page */
+.error-page {
+  flex-direction: column;
+  color: var(--text-color);
+  align-items: center;
+}
+.error-page h1 {
+  font-size: 8rem;
+  text-shadow: var(--text-shadow);
+}
+.error-page h3 {
+  color: var(--text-color);
+  text-shadow: var(--text-shadow);
+}
+.error-page a {
+  text-decoration: none;
+  color: var(--text-color);
+  vertical-align: middle;
+  display: flex;
+  gap: 0.3rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  padding: 0.4rem 1rem;
+  outline: none;
+}
+.error-page a:focus {
+  border: 3px solid white;
+}
+/* results page */
+.results-page {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+.results-section {
+  display: grid;
+  gap: clamp(0rem, 1vw, 1rem);
+  border: 1px solid var(--glassmorphic);
+  border-radius: 20px;
+  padding: 1rem;
+}
+.results-section h1 {
+  font-size: clamp(1.7rem, 3.5vw, 2.2rem);
+  color: var(--text-color);
+  text-transform: capitalize;
+  position: relative;
+  padding: 0.4rem 1rem;
+}
+.results-section h1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--glassmorphic);
+}
+.employee-cards {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 1rem;
+  padding: 3rem 0;
+  scroll-snap-type: x mandatory;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.employee-cards::-webkit-scrollbar {
+  height: 5px;
+  background: transparent;
+}
+.employee-cards article {
+  background: var(--glassmorphic);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
+  padding: clamp(3rem, 6vw, 4rem) clamp(1.4rem, 3vw, 2em)
+    clamp(1.4rem, 3vw, 2em) clamp(1.4rem, 3vw, 2em);
+  border-radius: 20px;
+  border-left: 1px solid var(--glassmorphic);
+  border-top: 1px solid var(--glassmorphic);
+  color: var(--text-color);
+  position: relative;
+  display: grid;
+  gap: 0.4rem;
+  width: 420px;
+  scroll-snap-align: center;
+}
+.top-design {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: var(--glassmorphic);
+  height: clamp(40px, 5vw, 50px);
+  border-radius: 20px 20px 0 0;
+  border-bottom: 2px solid var(--glassmorphic);
+}
+.row-section {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  grid-template-columns: clamp(50px, 12vw, 100px) clamp(190px, 20vw, 250px);
+}
+.row-section h2 {
+  text-shadow: var(--text-shadow);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+.row-section span {
+  text-align: right;
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+}
+.usr-image {
+  position: absolute;
+  z-index: 20;
+  left: 15%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  font-size: clamp(2.2rem, 4vw, 2.8rem);
+  background: rgba(233, 226, 226, 0.593);
+  border: 4px solid var(--glassmorphic);
+  padding: 0.4rem;
+  width: clamp(60px, 7vw, 80px);
+  height: clamp(60px, 7vw, 80px);
+  border-radius: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.company-card {
+  width: 100%;
+  max-width: 800px;
+}
+.company-details {
+  display: grid;
+  align-items: start;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+}
+.c-data-section {
+  display: grid;
+  align-items: center;
+  grid-template-columns: clamp(120px, 30vw, 210px) clamp(190px, 54vw, 550px);
+  color: var(--text-color);
+}
+.c-data-section h2 {
+  display: flex;
+  gap: 0.4rem;
+  align-self: self-start;
+  align-items: flex-start;
+  vertical-align: middle;
+  text-transform: capitalize;
+  text-shadow: var(--text-shadow);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+}
+.c-data-section span {
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  text-align: justify;
+}
+/* media query for mobile version */
+@media screen and (max-width: 768px) {
+  .employee-section {
+    height: auto !important;
+  }
+  .container {
+    background: linear-gradient(var(--gradient-dark));
+    background: -webkit-linear-gradient(var(--gradient-dark));
+    background-size: 1000%;
+    background-repeat: repeat-y;
+    gap: 0.5rem;
+    padding: 1vh;
+    padding-bottom: 0;
+    animation: none;
+  }
+  .section {
+    padding: 1.2em 2em;
+    width: 99%;
+    height: auto;
+  }
+  .employee-list {
+    min-width: unset;
+    width: 100%;
+    justify-content: unset;
+    padding: 0rem 0rem;
+  }
+  .employee-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .company-section {
+    display: grid;
+    justify-content: center;
+    align-items: unset;
+  }
+  .company-section form {
+    grid-template-areas:
+      "title title"
+      "name name"
+      "email email"
+      "employee employee"
+      "desc desc";
+    grid-template-rows: 100px 60px 60px 90px 180px 10px;
+    justify-content: center;
+    align-items: center;
+  }
+  .title {
+    width: 85vw;
+  }
+  #welcome {
+    text-align: left;
+  }
+  .input {
+    width: 100%;
+    padding: 1em;
+    font-weight: 500;
+    border: 3px solid transparent;
+  }
+  .single-employee form {
+    grid-template-areas:
+      "name age"
+      "email email"
+      "job job"
+      "file file";
+    grid-template-rows: 60px 60px 60px 60px;
+    grid-template-columns: 70% 30%;
+    grid-gap: 0 10px;
+  }
+  .employee-cards article {
+    width: 100%;
+  }
+  .results-page {
+    padding-bottom: 0.5rem;
+  }
+}
