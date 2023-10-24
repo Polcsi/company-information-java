@@ -2,5 +2,5 @@
 
 ## Table of contents
 
-- [Frondend](./frontend/README.md)
+- [Frontend](./frontend/README.md)
 - [Backend](./backend/README.md)
