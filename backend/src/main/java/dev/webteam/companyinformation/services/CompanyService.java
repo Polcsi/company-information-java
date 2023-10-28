@@ -4,7 +4,6 @@ import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.repositories.CompanyRepository;
 import dev.webteam.companyinformation.utils.ResponseClass;
 import dev.webteam.companyinformation.utils.Status;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
