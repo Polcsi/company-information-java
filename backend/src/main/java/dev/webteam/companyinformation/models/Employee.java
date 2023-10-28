@@ -19,4 +19,11 @@ public class Employee {
     private String email;
     private String jobTitle;
     private Integer age;
+
+    public Employee(String name, String email, String jobTitle, Integer age) {
+        this.name = name;
+        this.email = email;
+        this.jobTitle = jobTitle;
+        this.age = age;
+    }
 }

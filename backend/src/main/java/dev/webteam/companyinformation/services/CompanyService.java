@@ -32,5 +32,8 @@ public class CompanyService {
         return new ResponseClass<>("Company deleted successfully", Status.SUCCESS);
     }
 
-
+    public ResponseClass<Company> singleCompany(String companyId) {
+        Optional<Company> company = companyRepository.findCompanyByCompanyId(companyId);
+        return company.map(value -> new ResponseClass<>("Company fetched successfully", Status.SUCCESS, value)).orElseGet(() -> new ResponseClass<>("Company not found", Status.ERROR));
+    }
 }

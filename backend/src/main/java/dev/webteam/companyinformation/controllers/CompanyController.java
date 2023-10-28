@@ -34,4 +34,9 @@ public class CompanyController {
     public ResponseEntity<Object> deleteCompany(@PathVariable String companyId) {
         return new ResponseEntity<Object>(companyService.deleteCompany(companyId), HttpStatus.OK);
     }
+
+    @GetMapping("/{companyId}")
+    public ResponseEntity<ResponseClass<Company>> getSingleCompany(@PathVariable String companyId) {
+        return new ResponseEntity<>(companyService.singleCompany(companyId), HttpStatus.OK);
+    }
 }
