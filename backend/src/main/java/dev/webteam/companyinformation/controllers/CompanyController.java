@@ -3,7 +3,6 @@ package dev.webteam.companyinformation.controllers;
 import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.services.CompanyService;
 import dev.webteam.companyinformation.utils.ResponseClass;
-import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +26,21 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<ResponseClass<Company>> createCompany(@RequestBody Map<String, String> payload) {
-        return new ResponseEntity<ResponseClass<Company>>(companyService.createCompany(payload.get("name"), payload.get("email"), Optional.ofNullable(payload.get("description"))), HttpStatus.CREATED);
+        return new ResponseEntity<>(companyService.createCompany(payload.get("name"), payload.get("email"), Optional.ofNullable(payload.get("description"))), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{companyId}")
     public ResponseEntity<Object> deleteCompany(@PathVariable String companyId) {
-        return new ResponseEntity<Object>(companyService.deleteCompany(companyId), HttpStatus.OK);
+        return new ResponseEntity<>(companyService.deleteCompany(companyId), HttpStatus.OK);
     }
 
     @GetMapping("/{companyId}")
     public ResponseEntity<ResponseClass<Company>> getSingleCompany(@PathVariable String companyId) {
         return new ResponseEntity<>(companyService.singleCompany(companyId), HttpStatus.OK);
+    }
+
+    @PutMapping("/{companyId}")
+    public ResponseEntity<ResponseClass<Company>> updateCompany(@PathVariable String companyId, @RequestBody Map<String, String> payload) {
+        return new ResponseEntity<>(companyService.updateCompany(companyId, payload.get("name"), payload.get("email"), Optional.ofNullable(payload.get("description"))), HttpStatus.OK);
     }
 }
