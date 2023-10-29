@@ -36,6 +36,7 @@ public class EmployeeService {
 
     public ResponseClass<Employee> deleteEmployee(ObjectId employeeId) {
         employeeRepository.deleteEmployeeById(employeeId);
+
         return new ResponseClass<>("Employee deleted successfully", Status.SUCCESS);
     }
 

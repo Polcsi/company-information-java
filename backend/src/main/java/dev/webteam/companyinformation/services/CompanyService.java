@@ -4,9 +4,11 @@ import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.repositories.CompanyRepository;
 import dev.webteam.companyinformation.utils.ResponseClass;
 import dev.webteam.companyinformation.utils.Status;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -16,24 +18,49 @@ public class CompanyService {
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
+
     public ResponseClass<List<Company>> allCompanies() {
         return new ResponseClass<>("Companies fetched successfully", Status.SUCCESS, companyRepository.findAll());
     }
 
+    @SneakyThrows
     public ResponseClass<Company> createCompany(String name, String email, Optional<String> description) {
-        Company company = new Company(name, email, description.orElse(null));
-        companyRepository.save(company);
-        return new ResponseClass<>("Company created successfully", Status.SUCCESS, company);
+        try {
+            Company company = new Company(name, email, description.orElse(null));
+            companyRepository.save(company);
+
+            return new ResponseClass<>("Company created successfully", Status.SUCCESS, company);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
+    @SneakyThrows
     public ResponseClass<Object> deleteCompany(String companyId) {
-        companyRepository.deleteByCompanyId(companyId);
-        return new ResponseClass<>("Company deleted successfully", Status.SUCCESS);
+        try {
+            // Search for company
+            Optional<Company> company = companyRepository.findCompanyByCompanyId(companyId);
+            // Check if company exists
+            if (company.isEmpty()) {
+                throw new NoSuchElementException("Company not found");
+            }
+            // Delete company
+            companyRepository.deleteByCompanyId(companyId);
+
+            // Return success response
+            return new ResponseClass<>("Company deleted successfully", Status.SUCCESS);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException(e.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
+    @SneakyThrows
     public ResponseClass<Company> singleCompany(String companyId) {
         Optional<Company> company = companyRepository.findCompanyByCompanyId(companyId);
-        return company.map(value -> new ResponseClass<>("Company fetched successfully", Status.SUCCESS, value)).orElseGet(() -> new ResponseClass<>("Company not found", Status.ERROR));
+
+        return company.map(value -> new ResponseClass<>("Company fetched successfully", Status.SUCCESS, value)).orElseThrow(() -> new NoSuchElementException("Company not found"));
     }
 
     public ResponseClass<Company> updateCompany(String companyId, String name, String email, Optional<String> description) {
@@ -45,9 +72,11 @@ public class CompanyService {
             company1.setEmail(email);
             company1.setDescription(description.orElse(null));
             companyRepository.save(company1);
+
+            // Return success response
             return new ResponseClass<>("Company updated successfully", Status.SUCCESS, company1);
         } else {
-            return new ResponseClass<>("Company not found", Status.ERROR);
+            throw new NoSuchElementException("Company not found");
         }
     }
 }

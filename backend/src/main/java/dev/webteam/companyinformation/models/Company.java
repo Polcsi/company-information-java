@@ -1,6 +1,7 @@
 package dev.webteam.companyinformation.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,10 @@ public class Company {
     @Indexed(unique = true)
     @JsonProperty("companyId")
     private String companyId;
+    @NotBlank(message = "Name is required")
     @Indexed(unique = true)
     private String name;
+    @NotBlank(message = "Email is required")
     @Indexed(unique = true)
     private String email;
     private String description;
