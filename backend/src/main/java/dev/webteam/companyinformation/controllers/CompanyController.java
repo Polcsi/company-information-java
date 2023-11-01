@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,12 +37,12 @@ public class CompanyController {
     }
 
     @GetMapping("/{companyId}")
-    public ResponseEntity<ResponseClass<Company>> getSingleCompany(@PathVariable String companyId) throws Exception {
+    public ResponseEntity<ResponseClass<Company>> getSingleCompany(@PathVariable String companyId)  {
         return new ResponseEntity<>(companyService.singleCompany(companyId), HttpStatus.OK);
     }
 
     @PutMapping("/{companyId}")
-    public ResponseEntity<ResponseClass<Company>> updateCompany(@PathVariable String companyId, @RequestBody Map<String, String> payload) {
-        return new ResponseEntity<>(companyService.updateCompany(companyId, payload.get("name"), payload.get("email"), Optional.ofNullable(payload.get("description"))), HttpStatus.OK);
+    public ResponseEntity<ResponseClass<Company>> updateCompany(@PathVariable String companyId, @Valid @RequestBody Company company) {
+        return new ResponseEntity<>(companyService.updateCompany(companyId,company.getName(), company.getEmail(), Optional.ofNullable(company.getDescription())), HttpStatus.OK);
     }
 }

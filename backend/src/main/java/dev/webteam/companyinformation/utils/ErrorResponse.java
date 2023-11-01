@@ -10,15 +10,15 @@ public class ErrorResponse<T> extends ResponseClass<T> {
     @Setter
     private Integer errorCode;
     @Setter
-    private String error;
+    private Object errors;
     @Setter
     private String path;
 
-    public ErrorResponse(String message, Status status, T data, HttpStatus httpStatus, Integer errorCode, String error, String path) {
+    public ErrorResponse(String message, Status status, T data, HttpStatus httpStatus, Integer errorCode, String errors, String path) {
         super(message, status, data);
         this.httpStatus = httpStatus;
         this.errorCode = errorCode;
-        this.error = error;
+        this.errors = errors;
         this.path = path;
     }
 
