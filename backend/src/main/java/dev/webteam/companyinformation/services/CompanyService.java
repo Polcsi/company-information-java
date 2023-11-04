@@ -5,6 +5,7 @@ import dev.webteam.companyinformation.repositories.CompanyRepository;
 import dev.webteam.companyinformation.utils.ResponseClass;
 import dev.webteam.companyinformation.utils.Status;
 import lombok.SneakyThrows;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,8 @@ public class CompanyService {
             companyRepository.save(company);
 
             return new ResponseClass<>("Company created successfully", Status.SUCCESS, company);
+        } catch(DuplicateKeyException ex) {
+            throw new DuplicateKeyException(ex.getMessage());
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

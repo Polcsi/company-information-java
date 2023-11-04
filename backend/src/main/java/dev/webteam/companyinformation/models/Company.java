@@ -22,8 +22,8 @@ import java.util.UUID;
 public class Company {
     @Id
     private ObjectId id;
-    @Indexed(unique = true)
     @JsonProperty("companyId")
+    @Indexed(unique = true)
     private String companyId;
     @NotBlank(message = "Name is required")
     @Indexed(unique = true)

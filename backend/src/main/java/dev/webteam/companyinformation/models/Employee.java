@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "employees")
@@ -21,6 +22,7 @@ public class Employee {
     private String name;
     @Email
     @NotBlank(message = "Email is required")
+    @Indexed(unique = true)
     private String email;
     @NotBlank(message = "Job is required")
     private String jobTitle;

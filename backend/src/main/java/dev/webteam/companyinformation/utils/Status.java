@@ -9,4 +9,7 @@ public enum Status {
     NOT_FOUND,
     UNAUTHORIZED,
     FORBIDDEN,
+    CONFLICT,
+    BAD_REQUEST,
+    DUPLICATE_KEY
 }
