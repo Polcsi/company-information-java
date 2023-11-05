@@ -2,6 +2,7 @@ package dev.webteam.companyinformation.controllers;
 
 import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.services.CompanyService;
+import dev.webteam.companyinformation.utils.PaginatedResponse;
 import dev.webteam.companyinformation.utils.ResponseClass;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,8 +21,8 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseClass<List<Company>>> getAllCompanies() {
-        return new ResponseEntity<>(companyService.allCompanies(), HttpStatus.OK);
+    public ResponseEntity<PaginatedResponse<List<Company>>> getAllCompanies(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size, @RequestParam List<String> filter) {
+        return new ResponseEntity<>(companyService.allCompanies(page, size, filter), HttpStatus.OK);
     }
 
     @PostMapping

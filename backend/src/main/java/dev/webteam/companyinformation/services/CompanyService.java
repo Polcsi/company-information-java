@@ -2,10 +2,15 @@ package dev.webteam.companyinformation.services;
 
 import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.repositories.CompanyRepository;
+import dev.webteam.companyinformation.repositories.FilteringFactory;
+import dev.webteam.companyinformation.utils.PaginatedResponse;
 import dev.webteam.companyinformation.utils.ResponseClass;
 import dev.webteam.companyinformation.utils.Status;
 import lombok.SneakyThrows;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +25,15 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
-    public ResponseClass<List<Company>> allCompanies() {
-        return new ResponseClass<>("Companies fetched successfully", Status.SUCCESS, companyRepository.findAll());
+    public PaginatedResponse<List<Company>> allCompanies(Optional<Integer> page,  Optional<Integer> size,  List<String> filter) {
+       Optional<Pageable> pageable = Optional.empty();
+        if(page.isPresent() && size.isPresent()) {
+            pageable = PageRequest.of(page.get(), size.get()).toOptional();
+        }
+
+        Page<Company> all = companyRepository.findAllWithFilter(Company.class, FilteringFactory.parseFromParams(filter, Company.class), pageable);
+
+        return new PaginatedResponse<>("Companies fetched successfully", Status.SUCCESS, all.getContent(), all.getNumber(), all.getTotalElements(), all.getTotalPages(), all.getSize(), all.hasNext());
     }
 
     @SneakyThrows

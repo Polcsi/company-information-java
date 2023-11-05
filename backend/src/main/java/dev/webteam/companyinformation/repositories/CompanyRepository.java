@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CompanyRepository extends MongoRepository<Company, ObjectId> {
+public interface CompanyRepository extends MongoRepository<Company, ObjectId>, FilterableRepository<Company> {
     // Delete company by companyId
     void deleteByCompanyId(String companyId);
 

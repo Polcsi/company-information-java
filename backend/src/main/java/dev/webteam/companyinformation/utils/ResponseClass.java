@@ -11,7 +11,7 @@ public class ResponseClass<T> {
     private Status status;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd hh:mm:ss")
     private LocalDateTime timestamp;
-    private T data;
+   private T data;
 
     public ResponseClass(String message, Status status, T data) {
         this.message = message;
