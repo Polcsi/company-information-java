@@ -21,7 +21,7 @@ public class CompanyController {
     }
 
     @GetMapping
-    public ResponseEntity<PaginatedResponse<List<Company>>> getAllCompanies(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size, @RequestParam List<String> filter) {
+    public ResponseEntity<PaginatedResponse<List<Company>>> getAllCompanies(@RequestParam Optional<Integer> page, @RequestParam Optional<Integer> size, @RequestParam Optional<List<String>> filter) {
         return new ResponseEntity<>(companyService.allCompanies(page, size, filter), HttpStatus.OK);
     }
 

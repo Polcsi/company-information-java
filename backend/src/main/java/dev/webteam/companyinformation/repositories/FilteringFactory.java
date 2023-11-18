@@ -32,11 +32,19 @@ public class FilteringFactory {
         converterForClass.put(LocalDateTime.class, LocalDateTime::parse);
     }
 
-    public static <T> Filtering parseFromParams(List<String> filter, Class<T> typeParameterClass) {
+    public static <T> Filtering parseFromParams(Optional<List<String>> filter, Class<T> typeParameterClass) {
         Filtering filtering = new Filtering();
 
+        List<String> filterList = new ArrayList<>();
+
+        if(filter.isPresent()) {
+            filterList = filter.get();
+        }
+
+        // Check if filter is not present
+        if(filter.isPresent()) {
         // a filter is in the format: key|operator|value
-        for (String filterString : filter) {
+        for (String filterString : filterList) {
             // first split by | to get the key, operator and value
             String[] filterSplit = filterString.split("\\|");
 
@@ -77,6 +85,7 @@ public class FilteringFactory {
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             }
+        }
         }
         return filtering;
     }
