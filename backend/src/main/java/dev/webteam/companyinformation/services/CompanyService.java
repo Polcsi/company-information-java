@@ -25,32 +25,40 @@ public class CompanyService {
         this.companyRepository = companyRepository;
     }
 
+    @SneakyThrows
     public PaginatedResponse<List<Company>> allCompanies(Optional<Integer> page,  Optional<Integer> size,  Optional<List<String>> filter) {
-       Optional<Pageable> pageable = Optional.empty();
+        try {
+            Optional<Pageable> pageable = Optional.empty();
 
-        if(page.isPresent() && size.isPresent()) {
-            pageable = PageRequest.of(page.get(), size.get()).toOptional();
+            if (page.isPresent() && size.isPresent()) {
+                pageable = PageRequest.of(page.get(), size.get()).toOptional();
+            }
+
+            // Get all companies
+            List<Company> companyList = companyRepository.findAll();
+
+            // Return paginated response with filtering
+            Page<Company> allWithFilter = companyRepository.findAllWithFilter(Company.class, FilteringFactory.parseFromParams(filter, Company.class), pageable);
+
+            // Get page size
+            int pageSize = allWithFilter.getSize();
+            // Calculate total pages
+            int totalPages = companyList.size() / pageSize;
+
+            // Get current page
+            int currentPage = allWithFilter.getNumber();
+            // Calculate hasNext
+            boolean hasNext = currentPage < totalPages;
+            // Calculate hasPrevious
+            boolean hasPrevious = currentPage > 0;
+
+            return new PaginatedResponse<>("Companies fetched successfully", Status.SUCCESS, allWithFilter.getContent(), allWithFilter.getNumber(), (long) companyList.size() - 1, totalPages, allWithFilter.getSize(), hasNext, hasPrevious);
+        } catch (NullPointerException ex) {
+            throw new NullPointerException("Invalid filtering parameter");
         }
-
-        // Get all companies
-        List<Company> companyList = companyRepository.findAll();
-
-        // Return paginated response with filtering
-        Page<Company> allWithFilter = companyRepository.findAllWithFilter(Company.class, FilteringFactory.parseFromParams(filter, Company.class), pageable);
-
-        // Get page size
-        int pageSize = allWithFilter.getSize();
-        // Calculate total pages
-        int totalPages = companyList.size() / pageSize;
-
-        // Get current page
-        int currentPage = allWithFilter.getNumber();
-        // Calculate hasNext
-        boolean hasNext = currentPage < totalPages;
-        // Calculate hasPrevious
-        boolean hasPrevious = currentPage > 0;
-
-        return new PaginatedResponse<>("Companies fetched successfully", Status.SUCCESS, allWithFilter.getContent(), allWithFilter.getNumber(), (long) companyList.size() - 1, totalPages, allWithFilter.getSize(), hasNext, hasPrevious);
+        catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
     @SneakyThrows

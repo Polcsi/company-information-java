@@ -2,6 +2,7 @@ package dev.webteam.companyinformation.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -60,6 +61,9 @@ public interface FilterableRepository<T> {
                     break;
                 case regex:
                     criteriaMap.put(filter.key, Criteria.where(filter.key).regex((String)filter.value));
+                    break;
+                case sort:
+                    query.with(Sort.by(Sort.Direction.fromString((String)filter.value), filter.key));
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown operator: " + filter.operator);

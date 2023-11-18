@@ -24,7 +24,8 @@ public class Filtering {
         lte("lte"),
         ne("ne"),
         nin("nin"),
-        regex("regex");
+        regex("regex"),
+        sort("sort");
 
         private final String operator;
 
