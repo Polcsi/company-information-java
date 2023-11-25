@@ -83,6 +83,44 @@ This project uses the following technologies:
 
 The application provides the following endpoints.
 
+#### Response format
+
+```json
+{
+	"message": "Companies fetched successfully",
+	"status": "SUCCESS",
+	"timestamp": "2023/11/25 10:13:22",
+	"data": [
+		{
+            ...
+        },
+        ...
+	],
+	"currentPage": 0,
+	"totalItems": 2,
+	"totalPages": 3,
+	"pageSize": 1,
+	"hasNext": true,
+	"hasPrevious": false
+}
+```
+
+You can find several properties in the response.
+
+- `message`: A message about the result of the request
+- `status`: The status of the request. It can be `SUCCESS` or `ERROR`
+- `timestamp`: The timestamp of the request
+- `data`: The data of the request
+
+Relevent properties for pagination:
+
+- `currentPage`: The current page of the request
+- `totalItems`: The total number of items
+- `totalPages`: The total number of pages
+- `pageSize`: The size of the page
+- `hasNext`: If there is a next page
+- `hasPrevious`: If there is a previous page
+
 #### Company endpoints
 
 <table>
@@ -97,14 +135,55 @@ The application provides the following endpoints.
     <td align="center">GET</td>
     <td>/api/v1/companies</td>
     <td align="center">-</td>
-    <td>-</td>
+    <td><pre>
+[
+    {
+    "id": "Company id",
+    "name": "Company name",
+    "email": "Company email",
+    "description": "...",
+    "employeeIds": [
+        {
+            "id": "Employee id",
+            "name": "Employee name",
+            "email": "Employee email",
+            "age": "Employee age",
+            "jobTitle": "Employee job title",
+            "companyId": "Company id",
+        },
+        ...
+    ]
+},
+...
+]
+    </pre></td>
     <td>Get all companies</td>
   </tr>
     <tr>
         <td align="center">GET</td>
         <td>/api/v1/company/{id}</td>
         <td align="center">-</td>
-        <td>-</td>
+        <td><pre>
+[
+    {
+    "id": "Company id",
+    "name": "Company name",
+    "email": "Company email",
+    "description": "...",
+    "employeeIds": [
+        {
+            "id": "Employee id",
+            "name": "Employee name",
+            "email": "Employee email",
+            "age": "Employee age",
+            "jobTitle": "Employee job title",
+            "companyId": "Company id",
+        },
+        ...
+    ]
+}
+]
+        </pre></td>
         <td>Get a company by id</td>
     </tr>
     <tr>
@@ -172,20 +251,6 @@ The application provides the following endpoints.
     <th>Response</th>
     <th>Description</th>
   </tr>
-  <tr>
-    <td align="center">GET</td>
-    <td>/api/v1/employees</td>
-    <td align="center">-</td>
-    <td>-</td>
-    <td>Get all employees</td>
-  </tr>
-    <tr>
-        <td align="center">GET</td>
-        <td>/api/v1/employee/{id}</td>
-        <td align="center">-</td>
-        <td>-</td>
-        <td>Get an employee by id</td>
-    </tr>
     <tr>
         <td align="center">POST</td>
         <td>/api/v1/employee</td>
@@ -240,9 +305,63 @@ The application provides the following endpoints.
         <td>Update an employee</td>
     </tr>
     <tr>
-        <td align="center"><span color="white" background="red">DELETE</span></td>
+        <td align="center">DELETE</td>
         <td>/api/v1/employee/{id}</td>
         <td align="center">-</td>
         <td>-</td>
         <td>Delete an employee</td>
 </table>
+
+### Filtering & Sorting
+
+You can filter the companies by name, email, description and employees. You can find the query parameters below.
+
+#### Sorting
+
+You can sort the companies by name, email, description and employees. You can find the query parameters below.
+
+```sh
+http://127.0.0.1:8080/api/v1/company?filter=name%7Csort%7Cdesc
+```
+
+Above example will sort the companies by name in `descending` order.
+
+```sh
+http://127.0.0.1:8080/api/v1/company?filter=name%7Csort%7Casc
+```
+
+Above example will sort the companies by name in `ascending` order.
+
+#### Filtering
+
+You can filter the companies by name, email, description and employees. You can find the query parameters below.
+
+##### Functions
+
+- `eq`: Equals
+- `gt`: Greater than
+- `gte`: Greater than or equal
+- `in`: In
+- `lt`: Less than
+- `lte`: Less than or equal
+- `ne`: Not equal
+- `nin`: Not in
+- `regex`: Regular expression
+
+```sh
+http://127.0.0.1:8080/api/v1/company?filter=name%7Ceq%7Crandom%20test
+```
+
+Above example will filter the companies by name. It will return the companies which name is `random test`.
+
+```sh
+http://127.0.0.1:8080/api/v1/company?filter=companyId%7Ceq%7C4efcbbf9-97df-40de-ad60-181c6c3b2aa1
+```
+
+Above example will filter the companies by employee. It will return the companies which has an employee with the given id.
+
+```sh
+http://127.0.0.1:8080/api/v1/company?filter=name%7Cregex%7Crandom
+```
+
+Above example will filter the companies by name. It will return the companies which name contains the given string.
