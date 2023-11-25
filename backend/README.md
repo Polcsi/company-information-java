@@ -12,6 +12,9 @@ This is a `Java Spring Boot` application which provides a `REST API` for the fro
 - [Installation](#installation)
 - [Technologies](#technologies)
   - [Libraries](#libraries)
+- [Models](#models)
+  - [Company model](#company-model)
+  - [Employee model](#employee-model)
 - [Endpoints](#endpoints)
   - [Company endpoints](#company-endpoints)
   - [Employee endpoints](#employee-endpoints)
@@ -76,6 +79,59 @@ This project uses the following technologies:
 - [Spring boot devtools](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools)
 - [Spring boot starter test](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test)
 - [spring-dotenv](https://mvnrepository.com/artifact/me.paulschwarz/spring-dotenv)
+
+---
+
+### Models
+
+The application uses two models. The `Company` and the `Employee` model. The `Company` model has a list of `Employee` ids. The `Employee` model has a `companyId` field which is the id of the company.
+</br>
+</br>
+The application uses `MongoDB` as a database. The `Company` model has an `id` field which is the `ObjectId` of the document. The `Employee` model has an `id` field which is the `String` id of the document.
+
+#### Company model
+
+```java
+public class Company {
+    @Id
+    private ObjectId id;
+    @JsonProperty("companyId")
+    @Indexed(unique = true)
+    @Getter
+    private String companyId;
+    @NotBlank(message = "Name is required")
+    @Indexed(unique = true)
+    private String name;
+    @NotBlank(message = "Email is required")
+    @Email
+    @Indexed(unique = true)
+    private String email;
+    private String description;
+    @DocumentReference
+    private List<Employee> employeeIds;
+}
+```
+
+#### Employee model
+
+```java
+public class Employee {
+    @Id
+    private String id;
+    @NotBlank(message = "Name is required")
+    private String name;
+    @Email
+    @NotBlank(message = "Email is required")
+    @Indexed(unique = true)
+    private String email;
+    @NotBlank(message = "Job is required")
+    private String jobTitle;
+    @NotNull(message = "Age is required")
+    @Min(value = 18, message = "Age must be greater than 18")
+    private Integer age;
+    private String companyId;
+}
+```
 
 ---
 
