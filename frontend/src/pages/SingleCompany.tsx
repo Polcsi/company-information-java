@@ -28,7 +28,6 @@ const SingleCompany = () => {
   // fetch company data
   const fetcher = (url: string) =>
     axios.get(url).then((res) => {
-      console.log("%c REFETCH COMPANY DATA", "color: green");
       return res.data;
     });
 

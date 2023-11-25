@@ -21,7 +21,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<ResponseClass<Employee>> createEmployee(@RequestBody Map<String, String> payload) {
         // Create an employee object
-        Employee employee = new Employee(payload.get("name"), payload.get("email"), payload.get("jobTitle"), payload.get("age") == null ? null : Integer.parseInt(payload.get("age")));
+        Employee employee = new Employee(payload.get("name"), payload.get("email"), payload.get("jobTitle"), payload.get("age") == null ? null : Integer.parseInt(payload.get("age")), payload.get("companyId"));
         // Validate employee object
         Employee.validateEmployee(employee);
 

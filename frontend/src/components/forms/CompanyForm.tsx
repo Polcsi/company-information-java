@@ -22,8 +22,6 @@ const CompanyForm = () => {
           helpers.resetForm();
           toastSuccess("Company created successfully");
         } catch (error: any) {
-          console.error(error);
-          console.log(error.response.data.errors);
           if (error.response.data.errors) {
             for (const [_key, value] of Object.entries(
               error.response.data.errors

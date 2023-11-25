@@ -25,7 +25,7 @@ public class EmployeeService {
     }
 
     public ResponseClass<Employee> createEmployee(String companyId, String name, String email, String jobTitle, Integer age) {
-        Employee employee = employeeRepository.insert(new Employee(name, email, jobTitle, age));
+        Employee employee = employeeRepository.insert(new Employee(name, email, jobTitle, age, companyId));
 
         mongoTemplate.update(Company.class)
                 .matching(Criteria.where("companyId").is(companyId))

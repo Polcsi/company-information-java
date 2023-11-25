@@ -11,6 +11,7 @@ const CustomSelect = () => {
   return (
     <>
       <select
+        style={{ width: "100%" }}
         className="select employeeJobTitle"
         defaultValue={0}
         onChange={(e) => styleRequiredInput(e as any)}

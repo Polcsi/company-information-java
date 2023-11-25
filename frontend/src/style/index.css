@@ -86,7 +86,7 @@ body {
   width: auto;
   display: grid;
   justify-content: center;
-  grid-template-rows: repeat(auto-fit, minmax(auto, 320px));
+  grid-template-rows: repeat(auto-fit, minmax(auto, 190px));
   gap: 1rem;
   padding: 0rem 3rem;
 }
@@ -114,15 +114,16 @@ body {
 .company-section form {
   color: var(--text-color);
   display: grid;
-  justify-content: center;
+
   align-items: center;
   grid-template-areas:
     "title title"
     "name email"
     "employee employee"
     "desc desc";
-  grid-template-rows: 110px 91px 91px 170px 20px;
+  grid-template-rows: 110px 91px 91px 170px 30px;
   grid-gap: 0 10px;
+  width: 100%;
 }
 .company-section form > #slider-container {
   grid-area: employee;
@@ -250,47 +251,7 @@ body {
   color: white;
   font-size: clamp(1.2rem, 3vw, 1.6rem);
 }
-.single-employee {
-  display: grid;
-  align-items: center;
-  gap: 0.5rem;
-  height: auto;
-  max-height: 320px;
-}
-.single-employee form {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  grid-template-areas:
-    "name age"
-    "email email"
-    "job job"
-    "file file";
-  grid-template-rows: 60px 60px 60px 60px;
-  grid-template-columns: 55% 45%;
-  grid-gap: 0 10px;
-}
-.single-employee form > .employeeName {
-  grid-area: name;
-  width: 100%;
-}
-.single-employee form > .employeeEmail {
-  grid-area: email;
-  width: 100%;
-}
-.single-employee form > .employeeAge {
-  grid-area: age;
-  width: 100%;
-}
-.single-employee form > .employeJobTitle {
-  grid-area: job;
-}
-.single-employee form > .employeeCVFile {
-  grid-area: file;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
+
 .single-employee form label {
   color: white;
   font-size: clamp(0.7rem, 1.8vw, 1rem);

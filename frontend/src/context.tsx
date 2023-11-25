@@ -28,7 +28,7 @@ interface EmployeeType {
   name: string;
   age: number;
   email: string;
-  job: string;
+  jobTitle: string;
   cv?: string;
 }
 
@@ -120,8 +120,13 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
       let errors: string[] = [];
       let employeeObject: EmployeeType = {} as EmployeeType;
 
+      // Create an iterable array from inputs and selects
+      const inputs = [
+        ...eForm.getElementsByTagName("input"),
+        ...eForm.getElementsByTagName("select"),
+      ];
       /* loop through the inputs and validate their values  */
-      eForm.childNodes.forEach((inputs) => {
+      inputs.forEach((inputs) => {
         switch ((inputs as HTMLInputElement).type) {
           case "text": // name field
             if (!(inputs as HTMLInputElement).value) {
@@ -176,7 +181,7 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
             } else {
               employeeObject = {
                 ...employeeObject,
-                job: (inputs as HTMLInputElement).value,
+                jobTitle: (inputs as HTMLInputElement).value,
               };
             }
             break;
@@ -254,6 +259,7 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
       document.querySelectorAll(".employee-form");
 
     const companyFormData = await validateCompanyForm(); // false if company form is not valid. If valid then returns an object of data
+    console.log(employeeForms);
     const employeeFormsData = await validateEmployeeForms(employeeForms); // false if one of the employee form is not valid. If valid then returns an object of data
 
     if (companyFormData !== false && employeeFormsData !== false) {
@@ -265,16 +271,50 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
       );
       console.log([{ company: companyFormData, employees: employeeFormsData }]);
       try {
-        // send the data to the backend
-        await axios.post(`${BASE_URL}/company/add_employees`, {
+        // Save company data to the database
+        await axios.post(`${BASE_URL}/api/v1/company`, {
           name: (companyFormData as any)[0].name,
           email: (companyFormData as any)[0].email,
           description: (companyFormData as any)[0].description,
-          employees: employeeFormsData,
         });
-      } catch (error) {
+
+        // Get the company id from the database
+        const { data } = await axios.get(
+          `${BASE_URL}/api/v1/company?filter=name%7Ceq%7C${
+            (companyFormData as any)[0].name
+          }`
+        );
+        console.log(data.data[0].companyId);
+
+        // Iterate through all employees and save them to the database
+        try {
+          (employeeFormsData as EmployeeType[]).forEach(
+            async (employee: EmployeeType) => {
+              await axios.post(`${BASE_URL}/api/v1/employee`, {
+                name: employee.name,
+                email: employee.email,
+                age: employee.age,
+                jobTitle: employee.jobTitle,
+                companyId: data.data[0].companyId,
+              });
+            }
+          );
+        } catch (error) {
+          console.error(error);
+          toastError("Something went wrong!");
+        }
+
+        return false;
+      } catch (error: any) {
+        if (error.response.data.errors.email) {
+          toastError(error.response.data.errors.email);
+        } else if (error.response.data.errors.name) {
+          toastError(error.response.data.errors.name);
+        } else {
+          toastError("Something went wrong!");
+        }
         console.error(error);
-        toastError("Something went wrong!");
+        return false;
       }
 
       toastSuccess("Forms have been sent successfully");

@@ -17,6 +17,7 @@
   font-weight: 500;
   border: 3px solid transparent;
   outline: none;
+  height: 100%;
 }
 .select:focus {
   border: 3px solid white;

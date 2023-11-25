@@ -2,6 +2,7 @@ package dev.webteam.companyinformation.services;
 
 import dev.webteam.companyinformation.models.Company;
 import dev.webteam.companyinformation.repositories.CompanyRepository;
+import dev.webteam.companyinformation.repositories.EmployeeRepository;
 import dev.webteam.companyinformation.repositories.FilteringFactory;
 import dev.webteam.companyinformation.utils.PaginatedResponse;
 import dev.webteam.companyinformation.utils.ResponseClass;
@@ -20,9 +21,11 @@ import java.util.Optional;
 @Service
 public class CompanyService {
     private final CompanyRepository companyRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
         this.companyRepository = companyRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @SneakyThrows
@@ -84,6 +87,8 @@ public class CompanyService {
             if (company.isEmpty()) {
                 throw new NoSuchElementException("Company not found");
             }
+            // Delete all employees from company
+            employeeRepository.deleteEmployeeByCompanyId(companyId);
             // Delete company
             companyRepository.deleteByCompanyId(companyId);
 

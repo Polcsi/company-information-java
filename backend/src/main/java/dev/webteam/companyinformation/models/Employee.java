@@ -34,12 +34,14 @@ public class Employee {
     @NotNull(message = "Age is required")
     @Min(value = 18, message = "Age must be greater than 18")
     private Integer age;
+    private String companyId;
 
-    public Employee(String name, String email, String jobTitle, Integer age) {
+    public Employee(String name, String email, String jobTitle, Integer age, String companyId) {
         this.name = name;
         this.email = email;
         this.jobTitle = jobTitle;
         this.age = age;
+        this.companyId = companyId;
     }
 
     public static void validateEmployee(Employee employee) {
