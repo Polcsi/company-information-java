@@ -108,6 +108,7 @@ public class CompanyService {
         return company.map(value -> new ResponseClass<>("Company fetched successfully", Status.SUCCESS, value)).orElseThrow(() -> new NoSuchElementException("Company not found"));
     }
 
+    @SneakyThrows
     public ResponseClass<Company> updateCompany(String companyId, String name, String email, Optional<String> description) {
         Optional<Company> company = companyRepository.findCompanyByCompanyId(companyId);
 

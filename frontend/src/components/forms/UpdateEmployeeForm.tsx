@@ -29,7 +29,15 @@ const UpdateEmployeeForm = () => {
                 <React.Fragment>
                   {values.employeeIds.map((_employeeForm, index: number) => {
                     return (
-                      <div className="section single-employee" key={index}>
+                      <div
+                        className="section single-employee"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "0.6rem",
+                        }}
+                        key={index}
+                      >
                         <h1>#{index + 1} Employee</h1>
                         <button
                           style={{
