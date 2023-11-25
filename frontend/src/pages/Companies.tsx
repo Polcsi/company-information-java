@@ -6,12 +6,22 @@ import EmployeeForm from "../components/forms/EmployeeForm";
 import axios, { AxiosError } from "axios";
 import useSWR from "swr";
 import { Tooltip } from "react-tooltip";
+import { APIResponse, BASE_URL } from "../globals";
 
 export interface CompanyData {
-  companyID: number;
+  companyID: string;
   description: string;
   email: string;
   name: string;
+  employeeIds: EmployeeData[];
+}
+
+export interface EmployeeData {
+  id: string;
+  name: string;
+  email: string;
+  jobTitle: string;
+  age: number;
 }
 
 const Companies = () => {
@@ -20,8 +30,8 @@ const Companies = () => {
       return res.data;
     });
 
-  const { data } = useSWR<CompanyData[], AxiosError>(
-    "http://127.0.0.1:8000/company/",
+  const { data, isLoading } = useSWR<APIResponse<CompanyData[]>, AxiosError>(
+    `${BASE_URL}/api/v1/company`,
     fetcher,
     {
       refreshInterval: 1000,
@@ -65,7 +75,7 @@ const Companies = () => {
           style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
         >
           <h1>Add employee</h1>
-          <EmployeeForm companies={data} />
+          {!isLoading && data ? <EmployeeForm companies={data.data} /> : null}
         </header>
       </aside>
 
@@ -77,7 +87,7 @@ const Companies = () => {
         <div style={{ zIndex: "1000", position: "absolute" }}>
           <Tooltip id="employees-tooltip" place="bottom" />
         </div>
-        <CompanyList companies={data} />
+        {!isLoading && data ? <CompanyList companies={data.data} /> : null}
       </main>
       <HomeButton />
     </Background>

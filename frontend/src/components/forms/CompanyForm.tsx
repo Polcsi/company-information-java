@@ -2,6 +2,7 @@ import { Field, Form, Formik, FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useGlobalContext } from "../../context";
 import axios from "axios";
+import { BASE_URL } from "../../globals";
 
 const CompanyForm = () => {
   const { toastSuccess, toastError } = useGlobalContext();
@@ -17,7 +18,7 @@ const CompanyForm = () => {
         }>
       ) => {
         try {
-          await axios.post("http://127.0.0.1:8000/company/", values);
+          await axios.post(`${BASE_URL}/company/`, values);
           helpers.resetForm();
           toastSuccess("Company created successfully");
         } catch (error) {

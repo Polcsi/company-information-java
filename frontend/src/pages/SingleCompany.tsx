@@ -11,6 +11,7 @@ import { useGlobalContext } from "../context";
 import * as Yup from "yup";
 import UpdateEmployeeForm from "../components/forms/UpdateEmployeeForm";
 import UpdateCompanyForm from "../components/forms/UpdateCompanyForm";
+import { BASE_URL } from "../globals";
 
 export interface UpdateFormData {
   name: string;
@@ -38,7 +39,7 @@ const SingleCompany = () => {
     });
 
   const { data, isLoading } = useSWR<FullCompanyData[], AxiosError>(
-    `http://127.0.0.1:8000/company/${id}/employees`,
+    `${BASE_URL}/company/${id}/employees`,
     fetcher,
     {
       revalidateOnFocus: true,
@@ -53,7 +54,7 @@ const SingleCompany = () => {
 
   const handleUpdate = async (values: UpdateFormData) => {
     try {
-      await axios.put(`http://127.0.0.1:8000/company/${id}/employees`, values);
+      await axios.put(`${BASE_URL}/company/${id}/employees`, values);
 
       toastSuccess("Company updated successfully!");
       navigate(`/companies`);

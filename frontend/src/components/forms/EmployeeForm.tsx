@@ -4,6 +4,7 @@ import { useGlobalContext } from "../../context";
 import { jobTitles } from "../../data";
 import axios from "axios";
 import { CompanyData } from "../../pages/Companies";
+import { BASE_URL } from "../../globals";
 
 const EmployeeForm = ({ companies }: { companies?: CompanyData[] }) => {
   const { toastSuccess, toastError } = useGlobalContext();
@@ -13,7 +14,7 @@ const EmployeeForm = ({ companies }: { companies?: CompanyData[] }) => {
       onSubmit={async (values, helpers) => {
         console.log(values);
         try {
-          await axios.post("http://127.0.0.1:8000/employee/", values);
+          await axios.post(`${BASE_URL}/employee/`, values);
 
           helpers.resetForm();
 
@@ -55,13 +56,15 @@ const EmployeeForm = ({ companies }: { companies?: CompanyData[] }) => {
             <option value="null" hidden>
               Select company
             </option>
-            {companies?.map((company: CompanyData) => {
-              return (
-                <option key={company.companyID} value={company.companyID}>
-                  {company.name}
-                </option>
-              );
-            })}
+            {companies
+              ? companies?.map((company: CompanyData) => {
+                  return (
+                    <option key={company.companyID} value={company.companyID}>
+                      {company.name}
+                    </option>
+                  );
+                })
+              : null}
           </Field>
           <div style={{ display: "flex", gap: "0.4rem", width: "100%" }}>
             <Field

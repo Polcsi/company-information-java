@@ -2,59 +2,26 @@ import React from "react";
 import { GoOrganization } from "react-icons/go";
 import { BsPersonLinesFill } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { CompanyData } from "../pages/Companies";
-import useSWR from "swr";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-export interface FullCompanyData {
-  companyID: number;
-  description: string;
-  email: string;
-  name: string;
-  employees: {
-    employeeID: number;
-    name: string;
-    email: string;
-    age: number;
-    job: string;
-  }[];
-}
+import { BASE_URL } from "../globals";
 
 const CompanyRow = ({
   companyID,
   name,
   email,
+  employeeIds,
 }: Omit<CompanyData, "description">) => {
   const navigate = useNavigate();
   const [isDeleting, setIsDeleting] = React.useState(false);
-
-  const fetcher = (url: string) =>
-    axios.get(url).then((res) => {
-      return res.data;
-    });
-
-  const { data } = useSWR<FullCompanyData[], AxiosError>(
-    `http://127.0.0.1:8000/company/${companyID}/employees`,
-    fetcher,
-    {
-      refreshInterval: 1000,
-      revalidateOnFocus: true,
-      refreshWhenOffline: true,
-      refreshWhenHidden: false,
-      revalidateOnMount: true,
-      onError(error) {
-        console.log(`%c ${error}`, "color: red");
-      },
-    }
-  );
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
       await setTimeout(async () => {
-        await axios.delete(`http://127.0.0.1:8000/company/${companyID}`);
+        await axios.delete(`${BASE_URL}/company/${companyID}`);
       }, 1000);
     } catch (error) {
       setIsDeleting(false);
@@ -118,9 +85,9 @@ const CompanyRow = ({
         className="number-of-employees"
         data-tooltip-id="employees-tooltip"
         data-tooltip-html={`${
-          data
-            ? data[0]?.employees
-                .map((employee) => {
+          employeeIds
+            ? employeeIds
+                ?.map((employee) => {
                   return `${employee.name}`;
                 })
                 .join("<br />")
@@ -128,7 +95,7 @@ const CompanyRow = ({
         }`}
       >
         <BsPersonLinesFill />
-        <span>{data ? data[0]?.employees.length : 0}</span>
+        <span>{employeeIds ? employeeIds?.length : 0}</span>
       </div>
     </article>
   );

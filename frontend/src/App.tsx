@@ -10,7 +10,7 @@ function fakeDelay() {
     promise.then(
       (data: any) =>
         new Promise((resolve) => {
-          setTimeout(() => resolve(data), 2500);
+          setTimeout(() => resolve(data), 1000);
         })
     );
 }

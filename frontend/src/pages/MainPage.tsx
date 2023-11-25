@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import { useGlobalContext } from "../context";
 import { CompanyData } from "./Companies";
+import { BASE_URL } from "../globals";
 
 const MainPage = () => {
   // useNavigate is a hook that allows us to navigate to a different page
@@ -19,7 +20,7 @@ const MainPage = () => {
     });
 
   const { data } = useSWR<CompanyData[], AxiosError>(
-    "http://127.0.0.1:8000/company/",
+    `${BASE_URL}/company/`,
     fetcher,
     {
       refreshInterval: 1000,

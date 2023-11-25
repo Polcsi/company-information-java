@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:5000", allowedHeaders = "Requestor-Type")
 @RestController
 @RequestMapping("/api/v1/company")
 public class CompanyController {

@@ -12,6 +12,7 @@ import {
   FormEvent,
 } from "react";
 import { toast } from "react-toastify";
+import { BASE_URL } from "./globals";
 
 type ProviderParams = {
   children?: ReactElement[] | ReactElement | undefined;
@@ -265,7 +266,7 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
       console.log([{ company: companyFormData, employees: employeeFormsData }]);
       try {
         // send the data to the backend
-        await axios.post("http://127.0.0.1:8000/company/add_employees", {
+        await axios.post(`${BASE_URL}/company/add_employees`, {
           name: (companyFormData as any)[0].name,
           email: (companyFormData as any)[0].email,
           description: (companyFormData as any)[0].description,
