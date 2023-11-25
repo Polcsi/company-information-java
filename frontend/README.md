@@ -1,6 +1,6 @@
 # Frontend documentation
 
-This is a React Application which collect company and employees information
+This is a React **Frontend** Application which collect company and employees information. You can find the documentation of the backend [here](../backend/README.md).
 
 Application seperated six pages:
 
@@ -53,10 +53,31 @@ npm run dev
 
 ### Technologies
 
-- Typescript
-- React
-- React Router
-- Custom CSS
+</br>
+<table align="center">
+<tr>
+    <td>
+        <p align="center">
+            <img width="160" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png" alt="java"/>
+        </p>
+    </td>
+    <td>
+        <p align="center">
+            <img width="160" src="https://camo.githubusercontent.com/61e102d7c605ff91efedb9d7e47c1c4a07cef59d3e1da202fd74f4772122ca4e/68747470733a2f2f766974656a732e6465762f6c6f676f2e737667" alt="mongodb"/>
+        </p>
+    </td>
+    <td>
+        <p align="center">
+           <img width="160" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png" alt="mongodb"/>
+        </p>
+    </td>
+</tr>
+    <tr>
+        <td><p align="center">React</p></td>
+        <td><p align="center">Vite</p></td>
+        <td><p align="center">TypeScript</p></td>
+    </tr>
+</table>
 
 #### Libraries
 
