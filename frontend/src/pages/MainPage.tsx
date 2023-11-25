@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 import { useGlobalContext } from "../context";
 import { CompanyData } from "./Companies";
-import { BASE_URL } from "../globals";
+import { APIResponse, BASE_URL } from "../globals";
 
 const MainPage = () => {
   // useNavigate is a hook that allows us to navigate to a different page
@@ -19,8 +19,8 @@ const MainPage = () => {
       return res.data;
     });
 
-  const { data } = useSWR<CompanyData[], AxiosError>(
-    `${BASE_URL}/company/`,
+  const { data } = useSWR<APIResponse<CompanyData[]>, AxiosError>(
+    `${BASE_URL}/api/v1/company`,
     fetcher,
     {
       refreshInterval: 1000,
@@ -100,10 +100,10 @@ const MainPage = () => {
             </p>
             <div className="main-page-indicator">
               <span style={{ fontWeight: "600" }}>
-                {data ? data?.length : 0}
+                {data ? data?.data.length : 0}
               </span>
               <span>
-                {(data?.length ? data?.length : 0) > 1
+                {(data?.data.length ? data?.data.length : 0) > 1
                   ? "Companies"
                   : "Company"}
               </span>
