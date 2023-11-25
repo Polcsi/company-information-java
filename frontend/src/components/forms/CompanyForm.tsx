@@ -18,7 +18,7 @@ const CompanyForm = () => {
         }>
       ) => {
         try {
-          await axios.post(`${BASE_URL}/company/`, values);
+          await axios.post(`${BASE_URL}/api/v1/company`, values);
           helpers.resetForm();
           toastSuccess("Company created successfully");
         } catch (error) {

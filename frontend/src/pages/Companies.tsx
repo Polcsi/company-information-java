@@ -9,7 +9,7 @@ import { Tooltip } from "react-tooltip";
 import { APIResponse, BASE_URL } from "../globals";
 
 export interface CompanyData {
-  companyID: string;
+  companyId: string;
   description: string;
   email: string;
   name: string;
@@ -87,7 +87,9 @@ const Companies = () => {
         <div style={{ zIndex: "1000", position: "absolute" }}>
           <Tooltip id="employees-tooltip" place="bottom" />
         </div>
-        {!isLoading && data ? <CompanyList companies={data.data} /> : null}
+        {!isLoading && data ? (
+          <CompanyList key={0} companies={data.data} />
+        ) : null}
       </main>
       <HomeButton />
     </Background>

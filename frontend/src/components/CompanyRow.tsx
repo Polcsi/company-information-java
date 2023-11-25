@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../globals";
 
 const CompanyRow = ({
-  companyID,
+  companyId,
   name,
   email,
   employeeIds,
@@ -21,7 +21,7 @@ const CompanyRow = ({
     setIsDeleting(true);
     try {
       await setTimeout(async () => {
-        await axios.delete(`${BASE_URL}/company/${companyID}`);
+        await axios.delete(`${BASE_URL}/api/v1/company/${companyId}`);
       }, 1000);
     } catch (error) {
       setIsDeleting(false);
@@ -31,13 +31,13 @@ const CompanyRow = ({
   };
 
   const handleClick = () => {
-    if (!isDeleting) navigate(`/companies/${companyID}`);
+    if (!isDeleting) navigate(`/companies/${companyId}`);
   };
 
   return (
     <article
       className="company-row"
-      id={`${companyID}-company`}
+      id={`${companyId}-company`}
       onClick={handleClick}
       aria-disabled={isDeleting}
       style={{

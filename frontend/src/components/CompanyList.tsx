@@ -6,7 +6,7 @@ const CompanyList = ({ companies }: { companies?: CompanyData[] }) => {
     <>
       <section className="company-list on-scroll">
         {companies?.map((company: CompanyData) => (
-          <CompanyRow key={company.companyID} {...company} />
+          <CompanyRow key={company.companyId} {...company} />
         ))}
       </section>
     </>
