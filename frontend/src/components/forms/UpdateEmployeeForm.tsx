@@ -4,9 +4,13 @@ import { UpdateFormData } from "../../pages/SingleCompany";
 import { BiTrash } from "react-icons/bi";
 import { BsPlusSquare } from "react-icons/bs";
 import { jobTitles } from "../../data";
+import axios from "axios";
+import { BASE_URL } from "../../globals";
+import { useGlobalContext } from "../../context";
 
 const UpdateEmployeeForm = () => {
   const { values, errors } = useFormikContext<UpdateFormData>();
+  const { toastError, toastSuccess } = useGlobalContext();
 
   return (
     <Form
@@ -17,13 +21,13 @@ const UpdateEmployeeForm = () => {
       }}
     >
       <FieldArray
-        name="employees"
+        name="employeeIds"
         render={(arrayHelpers) => {
           return (
             <React.Fragment>
-              {values.employees.length === 0 ? null : (
+              {values?.employeeIds?.length === 0 ? null : (
                 <React.Fragment>
-                  {values.employees.map((_employeeForm, index: number) => {
+                  {values.employeeIds.map((_employeeForm, index: number) => {
                     return (
                       <div className="section single-employee" key={index}>
                         <h1>#{index + 1} Employee</h1>
@@ -45,8 +49,21 @@ const UpdateEmployeeForm = () => {
                             borderRadius: "100%",
                           }}
                           type="button"
-                          onClick={() => {
-                            arrayHelpers.remove(index);
+                          onClick={async () => {
+                            try {
+                              // Remove the employee from database
+                              if (values.employeeIds[index].id) {
+                                await axios.delete(
+                                  `${BASE_URL}/api/v1/employee/${values.employeeIds[index].id}`
+                                );
+                                toastSuccess("Employee deleted successfully");
+                              }
+
+                              arrayHelpers.remove(index);
+                            } catch (error) {
+                              toastError("Something went wrong");
+                              console.error(error);
+                            }
                           }}
                         >
                           <BiTrash />
@@ -68,12 +85,12 @@ const UpdateEmployeeForm = () => {
                             }}
                           >
                             <Field
-                              name={`employees.${index}.name`}
+                              name={`employeeIds.${index}.name`}
                               autoComplete="on"
                               className={`${
-                                typeof errors.employees === "string"
+                                typeof errors.employeeIds === "string"
                                   ? ""
-                                  : (errors.employees?.[index] as any)?.name
+                                  : (errors.employeeIds?.[index] as any)?.name
                                   ? "required-input"
                                   : ""
                               } employeeName input`}
@@ -83,9 +100,9 @@ const UpdateEmployeeForm = () => {
                               required
                             />
                             <Field
-                              name={`employees.${index}.age`}
+                              name={`employeeIds.${index}.age`}
                               className={`${
-                                (errors.employees?.[index] as any)?.age
+                                (errors.employeeIds?.[index] as any)?.age
                                   ? "required-input"
                                   : ""
                               } employeeAge input`}
@@ -103,12 +120,12 @@ const UpdateEmployeeForm = () => {
                             }}
                           >
                             <Field
-                              name={`employees.${index}.email`}
+                              name={`employeeIds.${index}.email`}
                               autoComplete="on"
                               className={`employeeEmail input ${
-                                typeof errors.employees === "string"
+                                typeof errors.employeeIds === "string"
                                   ? ""
-                                  : (errors.employees?.[index] as any)?.email
+                                  : (errors.employeeIds?.[index] as any)?.email
                                   ? "required-input"
                                   : ""
                               }`}
@@ -118,9 +135,9 @@ const UpdateEmployeeForm = () => {
                               required
                             />
                             <Field
-                              name={`employees.${index}.job`}
+                              name={`employeeIds.${index}.jobTitle`}
                               className={`select ${
-                                (errors.employees?.[index] as any)?.job
+                                (errors.employeeIds?.[index] as any)?.job
                                   ? "required-input"
                                   : ""
                               }`}
@@ -148,7 +165,14 @@ const UpdateEmployeeForm = () => {
               )}
               <div
                 className="section"
-                onClick={() => arrayHelpers.push({})}
+                onClick={() =>
+                  arrayHelpers.push({
+                    name: "",
+                    email: "",
+                    age: 18,
+                    jobTitle: "",
+                  })
+                }
                 style={{
                   cursor: "pointer",
                   color: "white",
