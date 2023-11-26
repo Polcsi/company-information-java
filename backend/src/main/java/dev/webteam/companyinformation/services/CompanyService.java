@@ -1,6 +1,7 @@
 package dev.webteam.companyinformation.services;
 
 import dev.webteam.companyinformation.models.Company;
+import dev.webteam.companyinformation.models.Employee;
 import dev.webteam.companyinformation.repositories.CompanyRepository;
 import dev.webteam.companyinformation.repositories.EmployeeRepository;
 import dev.webteam.companyinformation.repositories.FilteringFactory;
@@ -12,6 +13,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,10 +24,12 @@ import java.util.Optional;
 public class CompanyService {
     private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
+    private final MongoTemplate mongoTemplate;
 
-    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository) {
+    public CompanyService(CompanyRepository companyRepository, EmployeeRepository employeeRepository, MongoTemplate mongoTemplate) {
         this.companyRepository = companyRepository;
         this.employeeRepository = employeeRepository;
+        this.mongoTemplate = mongoTemplate;
     }
 
     @SneakyThrows
@@ -46,7 +50,7 @@ public class CompanyService {
             // Get page size
             int pageSize = allWithFilter.getSize();
             // Calculate total pages
-            int totalPages = companyList.size() / pageSize;
+            int totalPages = !companyList.isEmpty() ? companyList.size() / pageSize : 0;
 
             // Get current page
             int currentPage = allWithFilter.getNumber();
@@ -123,6 +127,37 @@ public class CompanyService {
             return new ResponseClass<>("Company updated successfully", Status.SUCCESS, company1);
         } else {
             throw new NoSuchElementException("Company not found");
+        }
+    }
+
+    @SneakyThrows
+    public ResponseClass<Company> createCompanyWithEmployees(String name, String email, Optional<String> description, List<Employee> employeeIds) {
+
+        Company company = new Company(name, email, description.orElse(null));
+        Company.validateCompany(company);
+
+        try {
+            // Append company id to each employee
+            employeeIds.forEach(employee -> employee.setCompanyId(company.getCompanyId()));
+
+            employeeRepository.saveAll(employeeIds);
+            companyRepository.save(company);
+
+            // Iterate over employeeIds and push employees to company employeeIds
+            employeeIds.forEach(employee -> mongoTemplate.update(Company.class)
+                    .matching(org.springframework.data.mongodb.core.query.Criteria.where("companyId").is(company.getCompanyId()))
+                    .apply(new org.springframework.data.mongodb.core.query.Update().push(("employeeIds"), employee)).first());
+
+            return new ResponseClass<>("Company created successfully", Status.SUCCESS, company);
+        } catch(DuplicateKeyException ex) {
+            // Delete all employees from company
+            employeeRepository.deleteEmployeeByCompanyId(company.getCompanyId());
+            // Delete company
+            companyRepository.deleteByCompanyId(company.getCompanyId());
+
+            throw new DuplicateKeyException(ex.getMessage());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 }

@@ -47,4 +47,10 @@ public class CompanyController {
     public ResponseEntity<ResponseClass<Company>> updateCompany(@PathVariable String companyId, @Valid @RequestBody Company company) {
         return new ResponseEntity<>(companyService.updateCompany(companyId,company.getName(), company.getEmail(), Optional.ofNullable(company.getDescription())), HttpStatus.OK);
     }
+
+    // Build an endpoint to create a company with list of employees
+    @PostMapping("/employees")
+    public ResponseEntity<ResponseClass<Company>> createCompanyWithEmployees(@Valid @RequestBody Company company) {
+        return new ResponseEntity<>(companyService.createCompanyWithEmployees(company.getName(), company.getEmail(), Optional.ofNullable(company.getDescription()), company.getEmployeeIds()), HttpStatus.CREATED);
+    }
 }

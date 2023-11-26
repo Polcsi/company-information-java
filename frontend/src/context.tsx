@@ -272,39 +272,12 @@ const useGlobalAppContext = ({}: GlobalContextType) => {
       console.log([{ company: companyFormData, employees: employeeFormsData }]);
       try {
         // Save company data to the database
-        await axios.post(`${BASE_URL}/api/v1/company`, {
+        await axios.post(`${BASE_URL}/api/v1/company/employees`, {
           name: (companyFormData as any)[0].name,
           email: (companyFormData as any)[0].email,
           description: (companyFormData as any)[0].description,
+          employeeIds: employeeFormsData,
         });
-
-        // Get the company id from the database
-        const { data } = await axios.get(
-          `${BASE_URL}/api/v1/company?filter=name%7Ceq%7C${
-            (companyFormData as any)[0].name
-          }`
-        );
-        console.log(data.data[0].companyId);
-
-        // Iterate through all employees and save them to the database
-        try {
-          (employeeFormsData as EmployeeType[]).forEach(
-            async (employee: EmployeeType) => {
-              await axios.post(`${BASE_URL}/api/v1/employee`, {
-                name: employee.name,
-                email: employee.email,
-                age: employee.age,
-                jobTitle: employee.jobTitle,
-                companyId: data.data[0].companyId,
-              });
-            }
-          );
-        } catch (error) {
-          console.error(error);
-          toastError("Something went wrong!");
-        }
-
-        return false;
       } catch (error: any) {
         if (error.response.data.errors.email) {
           toastError(error.response.data.errors.email);

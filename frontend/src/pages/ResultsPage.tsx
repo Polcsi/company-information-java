@@ -20,8 +20,6 @@ const ResultsPage = () => {
   ]);
   const navigate = useNavigate();
 
-  console.log(data);
-
   useEffect(() => {
     /* Navigates back to the home page if the dataJSON variable is empty. dataJSON variable stores the submitted json string from the entered values in the forms */
     if (!dataJSON) {
@@ -99,7 +97,7 @@ const ResultsPage = () => {
                   </div>
                   <div className="row-section">
                     <h2>Job:</h2>
-                    <span>{employee.job}</span>
+                    <span>{employee.jobTitle}</span>
                   </div>
                   <div className="row-section">
                     <h2>cv:</h2>

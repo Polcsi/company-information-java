@@ -295,6 +295,36 @@ Relevent properties for pagination:
         <td align="center">-</td>
         <td>-</td>
         <td>Delete a company</td>
+    </tr>
+    <tr>
+        <td align="center">POST</td>
+        <td>/api/v1/company/employee</td>
+        <td>
+            <pre>
+{
+	"name": "test 7",
+  "email": "test7@email.com",
+	"description": "asd",
+	"employeeIds": [
+		{
+			"name": "first employee",
+			"email": "firstemployee123@email.com",
+			"age": 21,
+			"jobTitle": "manager"
+		},
+		{
+			"name": "second employee",
+			"email": "secondemployee123@email.com",
+			"age": 50,
+			"jobTitle": "manager"
+		}
+	]
+}
+            </pre>
+        </td>
+        <td></td>
+        <td>Create a company with list of employees</td>
+    </tr>
 </table>
 
 #### Employee endpoints

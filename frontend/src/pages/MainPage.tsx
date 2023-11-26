@@ -19,7 +19,7 @@ const MainPage = () => {
       return res.data;
     });
 
-  const { data } = useSWR<APIResponse<CompanyData[]>, AxiosError>(
+  const { data, isLoading } = useSWR<APIResponse<CompanyData[]>, AxiosError>(
     `${BASE_URL}/api/v1/company`,
     fetcher,
     {
@@ -102,11 +102,15 @@ const MainPage = () => {
               <span style={{ fontWeight: "600" }}>
                 {data ? data?.data.length : 0}
               </span>
-              <span>
-                {(data?.data.length ? data?.data.length : 0) > 1
-                  ? "Companies"
-                  : "Company"}
-              </span>
+              {isLoading ? (
+                "Loading..."
+              ) : (
+                <span>
+                  {(data?.data.length ? data?.data.length : 0) > 1
+                    ? "Companies"
+                    : "Company"}
+                </span>
+              )}
             </div>
           </div>
           <div

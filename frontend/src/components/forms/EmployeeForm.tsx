@@ -3,14 +3,19 @@ import * as Yup from "yup";
 import { useGlobalContext } from "../../context";
 import { jobTitles } from "../../data";
 import axios from "axios";
-import { CompanyData } from "../../pages/Companies";
+import { CompanyData, EmployeeData } from "../../pages/Companies";
 import { BASE_URL } from "../../globals";
+
+interface EmployeeFormProps extends Omit<EmployeeData, "age" | "id"> {
+  companyId: string;
+  age: string | number;
+}
 
 const EmployeeForm = ({ companies }: { companies?: CompanyData[] }) => {
   const { toastSuccess, toastError } = useGlobalContext();
 
   return (
-    <Formik
+    <Formik<EmployeeFormProps>
       onSubmit={async (values, helpers) => {
         console.log(values);
         try {
@@ -31,7 +36,7 @@ const EmployeeForm = ({ companies }: { companies?: CompanyData[] }) => {
       initialValues={{
         name: "",
         email: "",
-        age: 18,
+        age: "",
         jobTitle: "",
         companyId: "",
       }}
