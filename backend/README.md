@@ -189,7 +189,7 @@ Relevent properties for pagination:
   </tr>
   <tr>
     <td align="center">GET</td>
-    <td>/api/v1/companies</td>
+    <td>/api/v1/company</td>
     <td align="center">-</td>
     <td><pre>
 [
@@ -298,7 +298,7 @@ Relevent properties for pagination:
     </tr>
     <tr>
         <td align="center">POST</td>
-        <td>/api/v1/company/employee</td>
+        <td>/api/v1/company/employees</td>
         <td>
             <pre>
 {
