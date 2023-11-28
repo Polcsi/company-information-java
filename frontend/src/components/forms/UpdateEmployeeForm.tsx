@@ -145,7 +145,7 @@ const UpdateEmployeeForm = () => {
                             <Field
                               name={`employeeIds.${index}.jobTitle`}
                               className={`select ${
-                                (errors.employeeIds?.[index] as any)?.job
+                                (errors.employeeIds?.[index] as any)?.jobTitle
                                   ? "required-input"
                                   : ""
                               }`}
